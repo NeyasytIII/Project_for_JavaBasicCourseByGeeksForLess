@@ -1,4 +1,4 @@
-package com.GeeksForLess.Task;
+package com.GeeksForLess.task.expressionsCheackers;
 
 public class Validator {
 
@@ -108,6 +108,7 @@ public class Validator {
 
     // Створимо загальний метод для визначення коректності усіх виразів одночасно.
     public static boolean expressionIsValid(String expression) {
+        if (expression.isEmpty()){return false;}
         // щоб уникнути зайвих помилок ми спрощуємо формат нашого виразу
         expression = expression.toLowerCase().replaceAll(" ", "");
         for (char el : expression.toCharArray()) {

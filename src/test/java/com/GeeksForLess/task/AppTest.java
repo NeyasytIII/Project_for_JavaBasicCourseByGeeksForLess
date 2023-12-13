@@ -1,4 +1,4 @@
-package com.GeeksForLess.Task;
+package com.GeeksForLess.task;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
