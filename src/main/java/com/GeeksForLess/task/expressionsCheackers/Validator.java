@@ -3,12 +3,18 @@ package com.GeeksForLess.task.expressionsCheackers;
 public class Validator {
 
 
+    public Validator(String text, double num) {
+        System.out.println(expressionIsValid(text));
+    }
+
+
     // Перевірка коректності чисел у виразі
     private static boolean numsIsValid(String expression) {
         // Лічільник крапок у числі.
         int dotCounter = 0;
         for (int i = 0; i < expression.length(); i++) {
-            if (expression.charAt(i) == '0' && isNumber(expression.charAt(i + 1))) { // Припустимо що "0" перед числом - теж є помилковим значенням.
+
+            if (i != expression.length() - 1 && expression.charAt(i) == '0' && isNumber(expression.charAt(i + 1))) { // Припустимо що "0" перед числом - теж є помилковим значенням.
                 return false;
             }
             // Відразу виключаємо можливість того, що точка може стояти по за числом, у якості першого чи останнього елементу.
@@ -48,18 +54,29 @@ public class Validator {
         // втановлені лічільники для порівняння кількості відкритих та закритих дужок.
         int open = 0;
         int close = 0;
+        boolean isNumber = false;
 
-        for (char el : expression.toCharArray()) {
-            if (el == '(') {
+        for (int i = 0; i < expression.length(); i++) {
+            if (expression.charAt(i) == '(') {
+                if (i != 0 && !isOperator(expression.charAt(i - 1))) {
+                    return false;
+                }
+                if (isOperator(expression.charAt(i + 1)) && isNotMinus(expression.charAt(i + 1))) {
+                    return false;
+                }
+
                 open++;
-            }
-            if (el == ')') {
+            } else if (expression.charAt(i) == ')') {
                 if (open <= close) {
                     return false; // випадок коли закритих скобок більше ніж відкритих - не можливий тому відразу повертаємо "false".
                 }
+                // Якщо відкрита дужка відразу закривається або містить 1 символ - повернемо "false"
+                if (expression.charAt(i - 1) == '(' || expression.charAt(i - 2) == '(' || isOperator(expression.charAt(i - 1))) {
+                    return false;
+                }
                 close++;
             }
-            if (el == '=' && close != open) {
+            if (expression.charAt(i) == '=' && close != open) {
                 return false;// якщо скобки не закриті до знаку "=" вираз є не коректним, повертаємо "false".
             }
         }
@@ -106,9 +123,32 @@ public class Validator {
         return operator == '=' || operator == '+' || operator == '/' || operator == '*' || operator == '-';
     }
 
+    // єдиними проблемами у x - може бути код латиниці та кирилиці або дублювання
+    private static boolean variableIsCorrect(String expression) {
+        for (int i = 0; i < expression.length(); i++) {
+            // У тому випадку, коли наша змінна не є першим чи останнім елементом ми перевіряємо її можливість дублювання.
+            if (i != 0 && i != expression.length() - 1 && (expression.charAt(i) == 'x' || expression.charAt(i) == 'х')) {
+                if (expression.charAt(i + 1) == 'x' || expression.charAt(i - 1) == 'x') {
+                    return false;
+                } else if (expression.charAt(i + 1) == 'х' || expression.charAt(i - 1) == 'х') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // перевіримо чи є введені дані взагалі виразом
+    public static boolean isExpression(String expression) {
+        return expression.contains("=") && (expression.contains("x") || expression.contains("х"));
+    }
+
     // Створимо загальний метод для визначення коректності усіх виразів одночасно.
     public static boolean expressionIsValid(String expression) {
-        if (expression.isEmpty()){return false;}
+        if (expression.isEmpty()) {
+            return false;
+        }
+
         // щоб уникнути зайвих помилок ми спрощуємо формат нашого виразу
         expression = expression.toLowerCase().replaceAll(" ", "");
         for (char el : expression.toCharArray()) {
@@ -117,12 +157,16 @@ public class Validator {
             }
         }
         // повертаємо результат всіх перевірок.
-        return operatorsIsValid(expression) && numsIsValid(expression) && bracketsIsValid(expression);
+        return operatorsIsValid(expression)
+                && numsIsValid(expression)
+                && bracketsIsValid(expression)
+                && variableIsCorrect(expression)
+                && isExpression(expression);
     }
 
     // Створимо метод для перевірки санкціонованості символу.
     private static boolean validChar(char el) {
-        return isNumber(el) || isOperator(el) || el == 'x' || el == '(' || el == ')' || el == '.';
+        return isNumber(el) || isOperator(el) || el == 'x' || el == '(' || el == ')' || el == '.' || el == 'х';
     }
 
 
