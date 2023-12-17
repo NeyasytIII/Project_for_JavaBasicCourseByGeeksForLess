@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JDBCGetROOT {
+public class ByRootGetter {
     private static final String URL = "jdbc:postgresql://localhost:8090/Expressions";
     private static final String USERNAME = "postgres";
     private static final String USERPASSWORD = "root";
@@ -39,10 +39,10 @@ public class JDBCGetROOT {
             try {
                 connection.rollback();
             } catch (SQLException ex) {
-                System.err.println("JDBCGetROOT Exception " + ex.getSQLState());
+                System.err.println("ByRootGetter Exception " + ex.getSQLState());
                 System.err.println(e.getMessage());
             }
-            System.err.println("JDBCGetROOT Exception " + e.getSQLState());
+            System.err.println("ByRootGetter Exception " + e.getSQLState());
             System.err.println(e.getMessage());
         }
 

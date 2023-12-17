@@ -54,8 +54,6 @@ public class Validator {
         // втановлені лічільники для порівняння кількості відкритих та закритих дужок.
         int open = 0;
         int close = 0;
-        boolean isNumber = false;
-
         for (int i = 0; i < expression.length(); i++) {
             if (expression.charAt(i) == '(') {
                 if (i != 0 && !isOperator(expression.charAt(i - 1))) {
@@ -67,6 +65,7 @@ public class Validator {
 
                 open++;
             } else if (expression.charAt(i) == ')') {
+
                 if (open <= close) {
                     return false; // випадок коли закритих скобок більше ніж відкритих - не можливий тому відразу повертаємо "false".
                 }
@@ -74,6 +73,17 @@ public class Validator {
                 if (expression.charAt(i - 1) == '(' || expression.charAt(i - 2) == '(' || isOperator(expression.charAt(i - 1))) {
                     return false;
                 }
+                    int index = i-1;
+                    while (expression.charAt(index) != '(') {
+                        if (!isNumber(expression.charAt(index)) && expression.charAt(index) != '.') {
+                            break;
+                        }
+                        else if(expression.charAt(index-1) == '('){
+                            return false;
+                        }
+                        index--;
+                    }
+
                 close++;
             }
             if (expression.charAt(i) == '=' && close != open) {
@@ -139,7 +149,7 @@ public class Validator {
     }
 
     // перевіримо чи є введені дані взагалі виразом
-    public static boolean isExpression(String expression) {
+    private static boolean isExpression(String expression) {
         return expression.contains("=") && (expression.contains("x") || expression.contains("х"));
     }
 

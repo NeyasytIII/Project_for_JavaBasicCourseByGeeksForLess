@@ -22,6 +22,7 @@ public class RootChecker {
 
         try {
             // розрахуємо результат обох частин завдяки заміні значення змінної root замість змінної.
+
             leftPartRes = new Expression(leftPart)
                     .with(Value(leftPart), root)
                     .evaluate();
@@ -36,8 +37,8 @@ public class RootChecker {
             return false;
         }
 // Для більшої інформативності виведемо значення лівої та правої частин
-        System.out.println("Left Part Result: " + leftPartRes.getNumberValue().doubleValue());
-        System.out.println("Right Part Result: " + rightPartRes.getNumberValue().doubleValue());
+//        System.out.println("Left Part Result: " + leftPartRes.getNumberValue().doubleValue());
+//        System.out.println("Right Part Result: " + rightPartRes.getNumberValue().doubleValue());
 
         // Повертаємо "true" якщо різниця обох частин по модулю через те,
         // що нам треба знати різницю між результатом операції між двома числами
