@@ -3,18 +3,17 @@ package com.GeeksForLess.task.expressionsCheackers;
 public class Validator {
 
 
-    public Validator(String text, double num) {
-        System.out.println(expressionIsValid(text));
-    }
-
-
     // Перевірка коректності чисел у виразі
     private static boolean numsIsValid(String expression) {
         // Лічільник крапок у числі.
         int dotCounter = 0;
         for (int i = 0; i < expression.length(); i++) {
-
-            if (i != expression.length() - 1 && expression.charAt(i) == '0' && isNumber(expression.charAt(i + 1))) { // Припустимо що "0" перед числом - теж є помилковим значенням.
+            if (i != 0 && expression.charAt(i) == '0' && expression.charAt(i - 1) == '/') {
+                return false;
+            }
+            if (i == 0 && expression.charAt(i) == '0' && isNumber(expression.charAt(i + 1))) {
+                return false;
+            } else if (i != 0 && i != expression.length() - 1 && expression.charAt(i) == '0' && isNumber(expression.charAt(i + 1)) && expression.charAt(i - 1) != '.') { // Припустимо що "0" перед числом - теж є помилковим значенням.
                 return false;
             }
             // Відразу виключаємо можливість того, що точка може стояти по за числом, у якості першого чи останнього елементу.
@@ -73,16 +72,15 @@ public class Validator {
                 if (expression.charAt(i - 1) == '(' || expression.charAt(i - 2) == '(' || isOperator(expression.charAt(i - 1))) {
                     return false;
                 }
-                    int index = i-1;
-                    while (expression.charAt(index) != '(') {
-                        if (!isNumber(expression.charAt(index)) && expression.charAt(index) != '.') {
-                            break;
-                        }
-                        else if(expression.charAt(index-1) == '('){
-                            return false;
-                        }
-                        index--;
+                int index = i - 1;
+                while (expression.charAt(index) != '(') {
+                    if (!isNumber(expression.charAt(index)) && expression.charAt(index) != '.') {
+                        break;
+                    } else if (expression.charAt(index - 1) == '(') {
+                        return false;
                     }
+                    index--;
+                }
 
                 close++;
             }
@@ -136,11 +134,9 @@ public class Validator {
     // єдиними проблемами у x - може бути код латиниці та кирилиці або дублювання
     private static boolean variableIsCorrect(String expression) {
         for (int i = 0; i < expression.length(); i++) {
-            // У тому випадку, коли наша змінна не є першим чи останнім елементом ми перевіряємо її можливість дублювання.
-            if (i != 0 && i != expression.length() - 1 && (expression.charAt(i) == 'x' || expression.charAt(i) == 'х')) {
-                if (expression.charAt(i + 1) == 'x' || expression.charAt(i - 1) == 'x') {
-                    return false;
-                } else if (expression.charAt(i + 1) == 'х' || expression.charAt(i - 1) == 'х') {
+            // У тому випадку, коли наша змінна не є першим елементом ми перевіряємо її можливість мати перед собою не коректний символ.
+            if (i != 0 && (expression.charAt(i) == 'x' || expression.charAt(i) == 'х')) {
+                if (!isOperator(expression.charAt(i - 1)) && expression.charAt(i - 1) != '(') {
                     return false;
                 }
             }

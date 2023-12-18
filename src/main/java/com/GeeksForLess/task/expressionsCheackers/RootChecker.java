@@ -13,6 +13,8 @@ public class RootChecker {
     //замість всіх входжень x, різниця між значеннями лівої та правої частин
     //рівняння не перевищує 10 у степені -9
     public static boolean isExpressionRoot(String expression, double root) {
+        expression = expression.replace("х", "x");
+        expression = expression.toLowerCase();
         // розділяємо вираз н праву та ліву частини
         String leftPart = expression.substring(0, expression.indexOf('='));
         String rightPart = expression.substring(expression.indexOf('=') + 1, expression.length());
@@ -49,7 +51,7 @@ public class RootChecker {
 
     //Оскільки в нас є 2 варіанти змінної (кирилицею та латиницею) ми створимо відстежувач для змінної
     private static String Value(String expression) {
-        if (expression.contains("x")) {
+        if (expression.contains("x") || expression.contains("х")) {
             return "x";
         } else {
             return "х";
