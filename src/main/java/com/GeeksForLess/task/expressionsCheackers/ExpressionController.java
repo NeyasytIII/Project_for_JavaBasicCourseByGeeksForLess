@@ -8,7 +8,7 @@ public class ExpressionController {
     public static void upload(String expression) {
         if (Validator.expressionIsValid(expression)) {
             JDBCPostExpression postExpression = new JDBCPostExpression(expression);
-            System.out.println("Ваш вираз додано");
+            System.out.println("Ваш вираз додано!");
         } else {
             System.err.println("Ви не можете додати цей вираз!!!");
             System.err.println("Не коректне рівняння");

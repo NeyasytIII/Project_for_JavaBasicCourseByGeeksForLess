@@ -16,7 +16,6 @@ public class JDBCPostExpression {
         Connection connection;
         try {
             connection = DriverManager.getConnection(URL, USERNAME, USERPASSWORD);
-            System.out.println("Connection is: " + !connection.isClosed());
             PreparedStatement statement = connection.prepareStatement(POSTEXPRESSION);
             statement.setString(1, expression);
             statement.execute();
@@ -30,7 +29,6 @@ public class JDBCPostExpression {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(URL, USERNAME, USERPASSWORD);
-            System.out.println("Connection is: " + !connection.isClosed());
             PreparedStatement statement1 = connection.prepareStatement(POSTEXPRESSION);
             PreparedStatement statement2 = connection.prepareStatement(GETEXPRESSIONID);
             PreparedStatement statement3 = connection.prepareStatement(POSTEXPRESSIONROOT);
